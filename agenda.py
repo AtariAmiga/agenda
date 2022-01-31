@@ -27,7 +27,7 @@ pdfmetrics.registerFont(TTFont(font_name, font_file))
 locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
 now = datetime.datetime.today()
 
-inner_margin = 30
+inner_margin = 40
 right_page = False
 if right_page:
     c.translate(inner_margin, 0)
@@ -48,24 +48,30 @@ def font_ascent(c):
     face = pdfmetrics.getFont(c._fontname).face
     return (face.ascent * c._fontsize) / 1000.0
 
-c.setLineWidth(0.1)
+def draw_header(canvas, date, x):
+    # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
+    num_day = date.strftime('%#d') # '#' gets rid of the leading zero (Windows only)
+    canvas.setFont(font_name, 60)
+    canvas.drawString(x + margin, height - font_ascent(c) - margin, num_day)
+
+    day_name = date.strftime('%A').upper()
+    canvas.setFont(font_name, 20)
+    a = font_ascent(c)
+    canvas.drawRightString(x + col_width - margin, height - margin - a, day_name)
+
+    month_and_year = date.strftime('%B %Y')
+    canvas.setFont(font_name, 12)
+    canvas.drawRightString(x + col_width - margin, height - margin - 2*a, month_and_year)
+
+
 for i in range(0, 3):
     x = i * col_width
     date = now + datetime.timedelta(days=i)
-    num_day = date.strftime('%#d') # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
-    day = date.strftime('%A').upper()
-    month_year = date.strftime('%B %Y')
 
-    c.setFont(font_name, 60)
-    c.drawString(x + margin, height - font_ascent(c) - margin, num_day)
-    c.setFont(font_name, 20)
-    a = font_ascent(c)
-    c.drawRightString(x + col_width - margin, height - margin - a, day)
-
-    c.setFont(font_name, 12)
-    c.drawRightString(x + col_width - margin, height - margin - 2*a, month_year)
+    draw_header(c, date, x)
 
     for j in range(1, nbr_lines):
+        c.setLineWidth(0.1)
         y = line_height * j
         c.line(x + margin, y, x + col_width / matter_ratio - 2, y)
         c.line(x + col_width / matter_ratio + 2, y, x + col_width - margin, y)
