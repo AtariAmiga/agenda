@@ -12,7 +12,17 @@ c = canvas.Canvas("hello.pdf", pagesize=A4_landscape)
 width = A4_landscape[0]
 height = A4_landscape[1]
 
-font_name = 'Helvetica'
+x = c.getAvailableFonts()
+# ['Courier', 'Courier-Bold', 'Courier-BoldOblique', 'Courier-Oblique',
+# 'Helvetica', 'Helvetica-Bold', 'Helvetica-BoldOblique', 'Helvetica-Oblique',
+# 'Symbol', 'Times-Bold', 'Times-BoldItalic', 'Times-Italic', 'Times-Roman', 'ZapfDingbats']
+# =>
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+font_name = 'Garamond'
+font_file = 'GARA.TTF'
+pdfmetrics.registerFont(TTFont(font_name, font_file))
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
 now = datetime.datetime.today()
