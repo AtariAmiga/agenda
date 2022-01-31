@@ -27,14 +27,14 @@ class GlobalSettings():
     def __init__(self, page_setting):
         self.inner_margin = 40
 
-        self.margin = 10
+        self.margin = 15
         self.page_width = page_setting[0]
         self.page_height = page_setting[1]
         self.font_name = 'Garamond'
         self.font_file = 'GARA.TTF'
-        self.matter_ratio = 5
+        self.matter_ratio = 4.5
         self.nbr_lines = 30
-        self.top_margin = 50
+        self.top_margin = 60
 
     def col_width(self):
         return (self.page_width - self.inner_margin) / 3.0
@@ -45,18 +45,19 @@ class GlobalSettings():
 gs = GlobalSettings(A4_landscape)
 pdfmetrics.registerFont(TTFont(gs.font_name, gs.font_file))
 
-for week_num in range(1, 3):
-    now = datetime.date.fromisocalendar(2022, week_num, 1)
+c.showPage()  # First page, empty, but we should print "Année 2021-2022"
+for week_num in range(1, 53):
+    monday = datetime.date.fromisocalendar(2022, week_num, 1)
 
     for week_part in [0, 1]:
         c.translate(week_part*gs.inner_margin, 0)
         draw_vertical_separators(c, gs)
         for day in [0, 1, 2]:
             x = day * gs.col_width()
-            date = now + datetime.timedelta(days=day+week_part*3)
+            # if week_part == 1 and day == 2: continue
+            date = monday + datetime.timedelta(days=day + week_part * 3)
 
             draw_header(c, x, date, gs)
             draw_lines(c, x, gs)
-
         c.showPage()
 c.save()
