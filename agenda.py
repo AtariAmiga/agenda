@@ -48,18 +48,15 @@ pdfmetrics.registerFont(TTFont(gs.font_name, gs.font_file))
 for week_num in range(1, 3):
     now = datetime.date.fromisocalendar(2022, week_num, 1)
 
-    right_page = False
-    if right_page:
-        c.translate(gs.inner_margin, 0)
+    for week_part in [0, 1]:
+        c.translate(week_part*gs.inner_margin, 0)
+        draw_vertical_separators(c, gs)
+        for day in [0, 1, 2]:
+            x = day * gs.col_width()
+            date = now + datetime.timedelta(days=day+week_part*3)
 
-    draw_vertical_separators(c, gs)
+            draw_header(c, x, date, gs)
+            draw_lines(c, x, gs)
 
-    for i in range(0, 3):
-        x = i * gs.col_width()
-        date = now + datetime.timedelta(days=i)
-
-        draw_header(c, x, date, gs)
-        draw_lines(c, x, gs)
-
-    c.showPage()
+        c.showPage()
 c.save()
