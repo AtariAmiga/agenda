@@ -14,7 +14,11 @@ height = A4_landscape[1]
 locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
 now = datetime.datetime.today()
 
-col_width = width / 3.0
+inner_margin = 30
+right_page = False
+if right_page:
+    c.translate(inner_margin, 0)
+col_width = (width - inner_margin) / 3.0
 margin = 5
 for i in range(1, 3):
     x = i * col_width
