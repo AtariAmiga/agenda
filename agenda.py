@@ -53,12 +53,17 @@ for i in range(0, 3):
     x = i * col_width
     date = now + datetime.timedelta(days=i)
     num_day = date.strftime('%#d') # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
-    day = date.strftime('%A').upper() # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
+    day = date.strftime('%A').upper()
+    month_year = date.strftime('%B %Y')
 
     c.setFont(font_name, 60)
     c.drawString(x + margin, height - font_ascent(c) - margin, num_day)
     c.setFont(font_name, 20)
-    c.drawRightString(x + col_width - margin, height - font_ascent(c) - margin, day)
+    a = font_ascent(c)
+    c.drawRightString(x + col_width - margin, height - margin - a, day)
+
+    c.setFont(font_name, 12)
+    c.drawRightString(x + col_width - margin, height - margin - 2*a, month_year)
 
     for j in range(1, nbr_lines):
         y = line_height * j
