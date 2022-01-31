@@ -4,6 +4,12 @@ def font_ascent(c):
     face = pdfmetrics.getFont(c._fontname).face
     return (face.ascent * c._fontsize) / 1000.0
 
+def draw_vertical_separators(c, gs):
+    c.setLineWidth(0.5)
+    for i in range(1, 3):
+        x = i * gs.col_width()
+        c.line(x, gs.margin, x, gs.height - gs.margin)
+
 def draw_header(canvas, x, date, gs):
     # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
     col_width = (gs.width - gs.inner_margin) / 3.0

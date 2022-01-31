@@ -5,7 +5,7 @@ import locale
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 
-from agenda_tools import draw_header, draw_lines
+from agenda_tools import draw_header, draw_lines, draw_vertical_separators
 
 A4_landscape = tuple(reversed(A4))
 c = canvas.Canvas("hello.pdf", pagesize=A4_landscape)
@@ -51,10 +51,7 @@ right_page = False
 if right_page:
     c.translate(gs.inner_margin, 0)
 
-c.setLineWidth(0.5)
-for i in range(1, 3):
-    x = i * gs.col_width()
-    c.line(x, gs.margin, x, gs.height - gs.margin)
+draw_vertical_separators(c, gs)
 
 for i in range(0, 3):
     x = i * gs.col_width()
