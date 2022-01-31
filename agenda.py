@@ -22,43 +22,44 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
 locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
-now = datetime.datetime.today()
 
 class GlobalSettings():
     def __init__(self, page_setting):
         self.inner_margin = 40
 
         self.margin = 10
-        self.width = page_setting[0]
-        self.height = page_setting[1]
+        self.page_width = page_setting[0]
+        self.page_height = page_setting[1]
         self.font_name = 'Garamond'
         self.font_file = 'GARA.TTF'
         self.matter_ratio = 5
         self.nbr_lines = 30
-        self.top = 50
+        self.top_margin = 50
 
     def col_width(self):
-        return (self.width - self.inner_margin) / 3.0
+        return (self.page_width - self.inner_margin) / 3.0
 
     def line_height(self):
-        return (self.height - self.top) / self.nbr_lines
+        return (self.page_height - self.top_margin) / self.nbr_lines
 
 gs = GlobalSettings(A4_landscape)
-
 pdfmetrics.registerFont(TTFont(gs.font_name, gs.font_file))
 
-right_page = False
-if right_page:
-    c.translate(gs.inner_margin, 0)
+for week_num in range(1, 3):
+    now = datetime.date.fromisocalendar(2022, week_num, 1)
 
-draw_vertical_separators(c, gs)
+    right_page = False
+    if right_page:
+        c.translate(gs.inner_margin, 0)
 
-for i in range(0, 3):
-    x = i * gs.col_width()
-    date = now + datetime.timedelta(days=i)
+    draw_vertical_separators(c, gs)
 
-    draw_header(c, x, date, gs)
-    draw_lines(c, x, gs)
+    for i in range(0, 3):
+        x = i * gs.col_width()
+        date = now + datetime.timedelta(days=i)
 
-c.showPage()
+        draw_header(c, x, date, gs)
+        draw_lines(c, x, gs)
+
+    c.showPage()
 c.save()
