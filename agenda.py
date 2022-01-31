@@ -32,7 +32,9 @@ right_page = False
 if right_page:
     c.translate(inner_margin, 0)
 col_width = (width - inner_margin) / 3.0
-margin = 5
+margin = 10
+
+c.setLineWidth(0.5)
 for i in range(1, 3):
     x = i * col_width
     c.line(x, margin, x, height - margin)
@@ -50,12 +52,12 @@ c.setLineWidth(0.1)
 for i in range(0, 3):
     x = i * col_width
     date = now + datetime.timedelta(days=i)
-    num_day = date.strftime('%d') # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
+    num_day = date.strftime('%#d') # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
     day = date.strftime('%A').upper() # https://docs.python.org/fr/3.6/library/datetime.html#strftime-strptime-behavior
 
-    c.setFont(font_name, 40)
+    c.setFont(font_name, 60)
     c.drawString(x + margin, height - font_ascent(c) - margin, num_day)
-    c.setFont(font_name, 25)
+    c.setFont(font_name, 20)
     c.drawRightString(x + col_width - margin, height - font_ascent(c) - margin, day)
 
     for j in range(1, nbr_lines):
