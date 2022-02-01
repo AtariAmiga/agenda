@@ -33,14 +33,11 @@ class GlobalSettings():
         self.font_name = 'Garamond'
         self.font_file = 'GARA.TTF'
         self.matter_ratio = 4.5
-        self.nbr_lines = 30
+        self.line_height = 18
         self.top_margin = 60
 
     def col_width(self):
         return (self.page_width - self.inner_margin) / 3.0
-
-    def line_height(self):
-        return (self.page_height - self.top_margin) / self.nbr_lines
 
 gs = GlobalSettings(A4_landscape)
 pdfmetrics.registerFont(TTFont(gs.font_name, gs.font_file))
@@ -52,12 +49,16 @@ for week_num in range(1, 53):
     for week_part in [0, 1]:
         c.translate(week_part*gs.inner_margin, 0)
         draw_vertical_separators(c, gs)
-        for day in [0, 1, 2]:
-            x = day * gs.col_width()
+        for day in range(0, 3 + week_part):
+            x = min(day, 2) * gs.col_width()
             # if week_part == 1 and day == 2: continue
             date = monday + datetime.timedelta(days=day + week_part * 3)
 
-            draw_header(c, x, date, gs)
-            draw_lines(c, x, gs)
+            y_top = gs.page_height / (1 if day < 3 else 2)
+            y_bottom = gs.page_height / 2 if week_part == 1 and day == 2 else 0
+
+            draw_header(c, x, y_top, date, gs)
+
+            draw_lines(c, x, y_top - 60, y_bottom, gs)
         c.showPage()
 c.save()
