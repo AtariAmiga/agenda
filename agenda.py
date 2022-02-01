@@ -5,7 +5,7 @@ import locale
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 
-from agenda_tools import draw_header, draw_lines, draw_vertical_separators
+from agenda_tools import draw_header, draw_lines, draw_vertical_separators, font_ascent
 
 A4_landscape = tuple(reversed(A4))
 c = canvas.Canvas("hello.pdf", pagesize=A4_landscape)
@@ -42,9 +42,14 @@ class GlobalSettings():
 gs = GlobalSettings(A4_landscape)
 pdfmetrics.registerFont(TTFont(gs.font_name, gs.font_file))
 
+year = 2022 # todo: année scolaire maintenant!
+c.setFont(gs.font_name, 100)
+a = font_ascent(c)
+c.drawCentredString(gs.page_width/2, gs.page_height/2 - a/2, str(year))
+
 c.showPage()  # First page, empty, but we should print "Année 2021-2022"
 for week_num in range(1, 53):
-    monday = datetime.date.fromisocalendar(2022, week_num, 1)
+    monday = datetime.date.fromisocalendar(year, week_num, 1)
 
     for week_part in [0, 1]:
         c.translate(week_part*gs.inner_margin, 0)
