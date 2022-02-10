@@ -49,6 +49,7 @@ end = datetime.datetime(2022, 7, 25)
 c.setFont(gs.font_name, 100)
 a = font_ascent(c)
 c.drawCentredString(gs.page_width/2, gs.page_height/2 - a/2, str(start.year))
+c.drawImage('logo.jpg', x=10, y=-60, width=200, preserveAspectRatio=True)  # todo: pourquoi y=-60 pour que ce soit en bas?!
 c.showPage()
 
 for week_num in range(start.isocalendar().week, end.isocalendar().week + 1):
