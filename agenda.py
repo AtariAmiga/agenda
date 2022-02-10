@@ -42,14 +42,17 @@ class GlobalSettings():
 gs = GlobalSettings(A4_landscape)
 pdfmetrics.registerFont(TTFont(gs.font_name, gs.font_file))
 
-year = 2022 # todo: année scolaire maintenant!
+start = datetime.datetime(2022, 3, 7)
+end = datetime.datetime(2022, 7, 25)
+
+# First page
 c.setFont(gs.font_name, 100)
 a = font_ascent(c)
-c.drawCentredString(gs.page_width/2, gs.page_height/2 - a/2, str(year))
+c.drawCentredString(gs.page_width/2, gs.page_height/2 - a/2, str(start.year))
+c.showPage()
 
-c.showPage()  # First page, empty, but we should print "Année 2021-2022"
-for week_num in range(1, 53):
-    monday = datetime.date.fromisocalendar(year, week_num, 1)
+for week_num in range(start.isocalendar().week, end.isocalendar().week + 1):
+    monday = datetime.date.fromisocalendar(start.year, week_num, 1)
 
     for week_part in [0, 1]:
         c.translate(week_part*gs.inner_margin, 0)
