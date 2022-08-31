@@ -18,7 +18,7 @@ def draw_header(canvas, x, y_top, date, gs):
     col_width = (gs.page_width - gs.inner_margin) / 3.0
 
     num_day = date.strftime('%#d') # '#' gets rid of the leading zero (Windows only)
-    canvas.setFont(gs.font_name, 60)
+    canvas.setFont(gs.font_name, 50)
     canvas.drawString(x + gs.margin, y_top - font_ascent(canvas) - gs.margin, num_day)
 
     day_name = date.strftime('%A').upper()
